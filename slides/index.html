@@ -1,84 +1,321 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Aula teste - Insper</title>
+    <title>Métodos de regularização em aprendizagem estatística</title>
     <meta charset="utf-8" />
     <meta name="author" content="Julio Trecenti" />
     <script src="libs/header-attrs-2.6/header-attrs.js"></script>
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
-    <link rel="stylesheet" href="css/custom-intro.css" type="text/css" />
+    <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Aula teste - Insper
-## Métodos de regularização em aprendizagem estatística
+# Métodos de regularização em aprendizagem estatística
+## Aula teste - Insper
 ### Julio Trecenti
-### janeiro de 2021
+### fevereiro de 2021
 
 ---
 
 
 
+
+class: middle
 
 # Hoje
 
+--
+
+## Definição de regularização
+
+--
+
+## Exemplo: Lasso
+
+--
+
+## Hiperparâmetros e validação cruzada
+
+--
+
+## Outros tipos de regularização
+
+
 ---
 
-# Exemplo: vendas
+# Os maiores avanços dos últimos 50 anos
+
+.pull-left[
+
+&lt;img src="img/gelman.png" width="705" /&gt;
+
+[Post da Nathalia Demétrio](https://www.linkedin.com/posts/nathaliademetrio_the-most-important-statistical-ideas-of-the-activity-6742068233467109376-I0hX)
+
+]
+
+--
+
+.pull-right[
+
+By: [Andrew Gelman &amp; Aki Vehtari](https://arxiv.org/pdf/2012.00174.pdf)
+
+.grey[Counterfactual causal inference]
+
+.grey[Bootstrapping and simulation-based inference]
+
+**Overparameterized models and regularization**
+
+.grey[Multilevel models]
+
+.grey[Generic computation algorithms]
+
+.grey[Adaptive decision analysis]
+
+.grey[Robust inference]
+
+.grey[Exploratory data analysis]
+
+]
 
 ---
 
-# Qual a melhor estratégia?
+# Exemplo: venda de tênis
+
+.pull-left[
+
+Você trabalha numa grande empresa de tênis e gostaria de **predizer** a **quantidade de vendas** de uma loja de sua rede a partir de uma base de dados com **mais de 100 variáveis**. 
+
+]
+
+.pull-right[
+
+&lt;img src="img/sapatos.gif" width="60%" style="display: block; margin: auto;" /&gt;
+
+]
+
+--
+
+Você escolhe fazer uma **regressão linear**. 
+
+--
+
+Como lidar com a grande quantidade de variáveis?
+
+**Opções**
+
+a. Não me importo. Coloca tudo no modelo!  
+b. Utilizo o método *stepwise* para selecionar as variáveis.  
+c. Testo todas as combinações de variáveis e escolho a que tem o melhor AIC.  
+d. Ajusto um modelo bayesiano com todas as variáveis.  
+e. Utilizo penalização L1 nos parâmetros.
+
+**Pollev**: https://PollEv.com/juliotrecent508
+
+---
+
+# Qual estratégia?
+
+&lt;iframe src="https://embed.polleverywhere.com/multiple_choice_polls/4jUSOIKicsdXkiAbByLvp?controls=none&amp;short_poll=true" style="width: 100%; height: 500px; border: 0"&gt;&lt;/iframe&gt;
 
 ---
 
 # O que é regularização?
 
----
-
-# Como regularizar?
+- É uma **modificação** no algoritmo de aprendizado, usada para **reduzir o erro de predição**, podendo ou não **aumentar o erro de treino**.
 
 --
 
-## Hiperparâmetros
+- Geralmente leva a resultados subótimos na base de treino, mas ajuda a **controlar a variância do modelo** e, com isso, reduzir o erro de predição.
+
+- Em particular, **ajuda a evitar sobreajuste**.
+
+&lt;img src="index_files/figure-html/unnamed-chunk-3-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Lasso: restrição nos parâmetros
+
+.grey[*a.k.a.* regressão linear com penalização L1 (módulo)]
+
+**Nome completo**: least absolute shrinkage and selection operator
 
 --
 
-## Validação cruzada
+O que faz? minimiza `\(EQM(\boldsymbol\beta)\)` sujeito à
+
+`$$\sum_{j=1}^p |\beta_j| \leq B$$`
+equivalente a minimizar
+
+--
+
+`$$EQM(\boldsymbol\beta) + \lambda \sum_{j=1}^p |\beta_j|$$`
+--
+
+&lt;img src="img/nao_entendi.gif" width="30%" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Regularização por restrição nos parâmetros
+&lt;iframe src="https://rseis.shinyapps.io/visLasso" style="width: 100%; height: 600px; border: 0; overflow:hidden;" scrolling="no"&gt;&lt;/iframe&gt;
 
 ---
 
-# Exemplo de simulação
+# Como regularizar na prática?
 
-Link: 
+
+### Hiperparâmetros
+
+- Usualmente, os métodos de regularização são parametrizados.
+
+- No caso do Lasso, por exemplo, precisamos encontrar um bom valor de `\(\lambda\)`.
+
+- Como esses parâmetros estão fora dos dados observados, chamamos de **hiperparâmetros**
+
+--
+
+### Validação cruzada
+
+.pull-left[
+
+- Separamos nossa base em *treino* e *validação*.
+
+- Ajustamos o modelo para vários valores dos hiperparâmetros e verificamos o erro na base de validação.
+
+]
+
+.pull-right[
+
+&lt;img src="img/split.gif" width="50%" style="display: block; margin: auto;" /&gt;
+
+]
 
 ---
 
-# Por quê regularizar?
+# Comentários
+
+- Lasso não é a única forma de regularizar.
+
+--
+
+- Não existe uma "forma correta" de regularizar. [Não existe almoço grátis!](http://www.no-free-lunch.org)
+
+&lt;img src="img/free_lunch.jpg" width="30%" style="display: block; margin: auto;" /&gt;
+
+--
+
+- Mesmo contexto de **inferência**, regularizar também faz todo sentido.
+
+--
+
+- Os métodos **bayesianos** têm propriedades de regularização por construção, através da **priori**.
+
+--
+
+- É uma área de **pesquisa ativa**. Novos métodos estão sendo estudados e testados até hoje.
 
 ---
 
-# Tipos de regularização
+# Outros tipos de regularização
+
+.pull-left[
+
+- Aumentação de dados
+
+- Aplicação de ruído
+
+- Aprendizado semi-supervisionado
+
+- Aprendizado multi-tarefa
+
+- Compartilhamento de parâmetros
+
+]
+
+--
+
+.pull-right[
+
+- Finalização precoce
+
+- Bagging e outros métodos de *ensemble*
+
+- Dropout
+
+- Treinamento adversarial
+
+- ...
+
+]
+
+--
+
+&lt;img src="img/study.gif" width="25%" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Resumo
 
+- Métodos de regularização ajudam a aumentar a performance do modelo.
+
+--
+
+- O Lasso é um método de regularização simples, que penaliza a função de custo pela soma dos valores absolutos dos parâmetros. 
+
+--
+
+- Regularização usualmente envolve hiperparâmetros, que podem ser encontrados através de técnicas de validação cruzada.
+
+--
+
+- Existem diversos métodos de regularização, e eles estão sendo criados até hoje.
+
 ---
 
 # Leituras
+
+.pull-left[
+
+&lt;a href="http://www.rizbicki.ufscar.br/ame/" target="_blank"&gt;
+
+&lt;img src="img/ame.png" width="90%" /&gt;
+
+&lt;/a&gt;
+
+]
+
+.pull-right[
+
+.pull-left[
+
+&lt;a href="https://www.deeplearningbook.org" target="_blank"&gt;
+
+&lt;img src="img/dlbook.jpg" width="100%" /&gt;
+
+&lt;/a&gt;
+
+]
+
+.pull-right[
+
+&lt;a href="https://web.stanford.edu/~hastie/ElemStatLearn/" target="_blank"&gt;
+
+&lt;img src="img/esl.jpg" width="100%" /&gt;
+
+&lt;/a&gt;
+
+]
+
+]
 
 ---
 
 # Tarefa
 
+1. Leia as partes 1, 5, 6 e 7 do artigo [Statistical Modeling: The Two Cultures](https://projecteuclid.org/download/pdf_1/euclid.ss/1009213726), de Leo Breiman. Se achar interessante, leia tudo!
+
+1. Escreva 2 ou 3 parágrafos explicando a visão do autor sobre a diferença entre os paradigmas de inferência e predição.
+
+1. Com base no que foi discutido na aula de hoje, tente explicar como a regularização ajuda em cada um dos paradigmas.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
