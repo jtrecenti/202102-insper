@@ -8,7 +8,7 @@ Este repositório contém informações e links da minha aula teste no Insper, d
 
 O tema da aula é "Métodos de regularização em aprendizagem estatística"
 
-- [Slides](https://jtrecenti.github.com/202102-insper/slides/index.html)
+- [Slides](https://jtrecenti.github.io/202102-insper/slides/index.html)
 - [App visLasso](https://rseis.shinyapps.io/visLasso)
 - [App visLasso (código)](https://github.com/curso-r/visLasso)
 
